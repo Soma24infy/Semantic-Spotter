@@ -8,11 +8,25 @@ Semantic spotter is a solution which should solve the following requirements usi
 The goal of the project will be to build a robust generative search system capable of effectively and accurately answering
 questions from various policy documents.
 
-## RAG Pipeline
+## Architecture Description
 
-- Embedding Layer: Turn text and tables from PDFs into dataframes and create vector representations with OpenAI's text-embedding-ada-002 model. Save these vectors in ChromaDB.
-- Search and Rank Layer: Conduct a semantic search for user queries within the knowledge database, bringing up the most relevant results.
-- Generation Layer: Combine the search results with the original query and a structured prompt to form coherent responses using a language model.
+1. Documents: We will be using list of HDFC insurance documents provides inside a single
+folder.
+2. Open API embedding: We ars using OpenAPI embedding as Vector DB for indexing
+insureance documetns in the form of embedding.
+3. Query Engine: We are using Query Engine Module of Llammaindex for perfomring
+synantic Search. Query Engine will use internally Retriver and Cohere Rerank to retrrive
+top-k relvent nodes from embedding.
+4. LLM : top k-documets along with usewr query will be passed to LLM to generate the
+accurate response.We are using chatGPT LLM.
+5. Caching:" Caching is being used to improve the read operation. Recent similar search
+will be store in Caching and user query frist will be served from Cahcing. If user query
+not found in cahce then query will be forwared to query engine and then LLM to generate
+the resposne. user query and generated resposne will be cached in in cache and will be
+served from there based ttl.
+6. Meta data:Along with Resposne we are also returning docs referece and similary score to
+improve the user confidence towards the implemented RAG system.
+7. Cohere-Rerank: Is being used to rerank the query based on semantic score.
 
 ## Technologies Used
 - Programming Languages: Python
